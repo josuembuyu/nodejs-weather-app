@@ -2,19 +2,20 @@ const request = require("request");
 
 const forecast = (latitude, longitude, callback) => {
   const url =
-    "http://api.weatherstack.com/current?access_key=c11d1f2ec0921ecf4f2417d659646393&query=" +
+    "http://api.weatherstack.com/current?access_key=666e90ce377c0f3be3c61944a6567112&query=" +
     encodeURIComponent(latitude) +
     "," +
     encodeURIComponent(longitude) +
     "&units=f";
 
-  request({ url: url, json: true }, (error, response) => {
+  request({ url: url, json: true }, (error, { body } = {}) => {
+    console.log(body);
     if (error) {
-      callback("Unable to connect to weather service!", undefined);
-    } else if (response.body.error) {
+      callback("Unable to connect to weather service!" + error, undefined);
+    } else if (body.error) {
       callback("Unable to find location", undefined);
     } else {
-      const current = response.body.current;
+      const current = body.current;
       callback(
         undefined,
         "It is currently " +
